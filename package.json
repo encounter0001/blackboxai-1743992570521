@@ -1,0 +1,13 @@
+{
+  "name": "wyno-dashboard",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tailwindcss -i src/input.css -o dist/output.css --minify",
+    "watch": "tailwindcss -i src/input.css -o dist/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0",
+    "postcss": "^8.4.21",
+    "autoprefixer": "^10.4.14"
+  }
+}
