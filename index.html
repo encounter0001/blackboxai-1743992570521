@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WYNO Anti-Cheat Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wyno: {
+                            primary: '#4F46E5',
+                            danger: '#EF4444',
+                            success: '#10B981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full text-gray-100">
+    <div class="min-h-full">
+        <nav class="bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-alt text-wyno-primary text-2xl"></i>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                                <a href="config.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Configuration</a>
+                                <a href="logs.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logs</a>
+                                <a href="about.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-white">
+                    <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                </h1>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <!-- Status Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gray-800 rounded-lg shadow p-4">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-wyno-primary bg-opacity-20 text-wyno-primary mr-4">
+                                <i class="fas fa-microchip text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-400">Spoofing Status</p>
+                                <p id="spoofing-status" class="text-lg font-semibold">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg shadow p-4">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-500 bg-opacity-20 text-blue-500 mr-4">
+                                <i class="fas fa-clock text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-400">Scan Interval</p>
+                                <p id="scan-interval" class="text-lg font-semibold">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg shadow p-4">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-wyno-success bg-opacity-20 text-wyno-success mr-4">
+                                <i class="fas fa-bell text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-400">Alerts Today</p>
+                                <p id="alert-count" class="text-lg font-semibold">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Process Monitoring -->
+                <div class="bg-gray-800 rounded-lg shadow overflow-hidden mb-6">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <h3 class="text-lg leading-6 font-medium text-white">
+                            <i class="fas fa-list-ul mr-2"></i> Active Processes
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-750">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">PID</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="process-table" class="bg-gray-800 divide-y divide-gray-700">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-4 text-center text-gray-400">
+                                        <i class="fas fa-circle-notch fa-spin mr-2"></i> Loading processes...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Alert History -->
+                <div class="bg-gray-800 rounded-lg shadow overflow-hidden">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                        <h3 class="text-lg leading-6 font-medium text-white">
+                            <i class="fas fa-history mr-2"></i> Recent Alerts
+                        </h3>
+                    </div>
+                    <div class="flow-root p-6">
+                        <ul id="alert-history" class="-mb-8">
+                            <li class="py-4">
+                                <div class="flex items-center">
+                                    <div class="animate-pulse flex space-x-4 w-full">
+                                        <div class="flex-1 space-y-4 py-1">
+                                            <div class="h-4 bg-gray-700 rounded w-3/4"></div>
+                                            <div class="space-y-2">
+                                                <div class="h-4 bg-gray-700 rounded"></div>
+                                                <div class="h-4 bg-gray-700 rounded w-5/6"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Will implement API calls and dynamic updates here
+        document.addEventListener('DOMContentLoaded', function() {
+            // Placeholder for actual implementation
+            setTimeout(() => {
+                document.getElementById('spoofing-status').textContent = 'Active';
+                document.getElementById('spoofing-status').classList.add('text-wyno-success');
+                document.getElementById('scan-interval').textContent = '5000 ms';
+                document.getElementById('alert-count').textContent = '3';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
