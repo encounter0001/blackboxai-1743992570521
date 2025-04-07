@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WYNO Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body class="h-full text-gray-100">
+    <div class="min-h-full">
+        <nav class="bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-alt text-indigo-500 text-2xl"></i>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="index.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                                <a href="config.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Configuration</a>
+                                <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Logs</a>
+                                <a href="about.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-3xl font-bold text-white">
+                        <i class="fas fa-scroll mr-2"></i> System Logs
+                    </h1>
+                    <button id="export-btn" class="inline-flex items-center px-3 py-1.5 border border-gray-600 text-sm font-medium rounded-md text-gray-200 bg-gray-700 hover:bg-gray-600">
+                        <i class="fas fa-file-export mr-2"></i> Export CSV
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <!-- Filters -->
+                <div class="bg-gray-800 rounded-lg shadow mb-6 p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Date Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Date Range</label>
+                            <div class="relative">
+                                <input id="date-range" type="text" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5" placeholder="Select date range">
+                            </div>
+                        </div>
+                        
+                        <!-- Severity Filter -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Severity</label>
+                            <select id="severity-filter" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                <option value="all">All Levels</option>
+                                <option value="info">Info</option>
+                                <option value="warning">Warning</option>
+                                <option value="error">Error</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Process Filter -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Process Name</label>
+                            <input type="text" id="process-filter" placeholder="Filter by process" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex items-end">
+                            <button id="apply-filters" class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2">
+                                <i class="fas fa-filter mr-2"></i> Apply
+                            </button>
+                            <button id="reset-filters" class="inline-flex items-center px-3 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-200 bg-gray-700 hover:bg-gray-600">
+                                <i class="fas fa-undo mr-2"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Log Table -->
+                <div class="bg-gray-800 rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-750">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Timestamp</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Severity</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Process</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Message</th>
+                                </tr>
+                            </thead>
+                            <tbody id="log-entries" class="bg-gray-800 divide-y divide-gray-700">
+                                <!-- Sample log entries will be loaded here -->
+                                <tr>
+                                    <td colspan="4" class="px-6 py-4 text-center text-gray-400">
+                                        <i class="fas fa-circle-notch fa-spin mr-2"></i> Loading logs...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-gray-750 px-4 py-3 flex items-center justify-between border-t border-gray-700 sm:px-6">
+                        <div class="flex-1 flex justify-between sm:hidden">
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-300 bg-gray-800 hover:bg-gray-700">
+                                Previous
+                            </a>
+                            <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-300 bg-gray-800 hover:bg-gray-700">
+                                Next
+                            </a>
+                        </div>
+                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-gray-400">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">127</span> entries
+                                </p>
+                            </div>
+                            <div>
+                                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700">
+                                        <span class="sr-only">Previous</span>
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                    <a href="#" aria-current="page" class="z-10 bg-indigo-600 border-indigo-500 text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        1
+                                    </a>
+                                    <a href="#" class="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        2
+                                    </a>
+                                    <a href="#" class="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        3
+                                    </a>
+                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400">
+                                        ...
+                                    </span>
+                                    <a href="#" class="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        8
+                                    </a>
+                                    <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700">
+                                        <span class="sr-only">Next</span>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize date picker
+            flatpickr("#date-range", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                defaultDate: [new Date().setDate(new Date().getDate() - 7), new Date()]
+            });
+
+            // Sample log data
+            const sampleLogs = [
+                {
+                    timestamp: "2023-11-15 14:32:18",
+                    severity: "warning",
+                    process: "cheatengine-x86_64",
+                    message: "Cheat process detected - terminating"
+                },
+                {
+                    timestamp: "2023-11-15 14:30:45",
+                    severity: "info",
+                    process: "system",
+                    message: "Scan completed - 0 suspicious processes found"
+                },
+                {
+                    timestamp: "2023-11-15 14:25:12",
+                    severity: "error",
+                    process: "kernel",
+                    message: "Blacklisted driver detected - acpi.sys"
+                },
+                {
+                    timestamp: "2023-11-15 14:20:33",
+                    severity: "warning",
+                    process: "wemod",
+                    message: "Game modification tool detected"
+                },
+                {
+                    timestamp: "2023-11-15 14:15:07",
+                    severity: "info",
+                    process: "system",
+                    message: "Discord alert sent successfully"
+                }
+            ];
+
+            // Render logs function
+            function renderLogs(logs) {
+                const logTable = document.getElementById('log-entries');
+                logTable.innerHTML = '';
+                
+                logs.forEach(log => {
+                    const row = document.createElement('tr');
+                    
+                    // Set row color based on severity
+                    let severityClass = '';
+                    let severityIcon = '';
+                    if (log.severity === 'error') {
+                        severityClass = 'text-red-400';
+                        severityIcon = 'fa-exclamation-circle';
+                    } else if (log.severity === 'warning') {
+                        severityClass = 'text-yellow-400';
+                        severityIcon = 'fa-exclamation-triangle';
+                    } else {
+                        severityClass = 'text-blue-400';
+                        severityIcon = 'fa-info-circle';
+                    }
+                    
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${log.timestamp}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${severityClass}">
+                                <i class="fas ${severityIcon} mr-1"></i> ${log.severity.charAt(0).toUpperCase() + log.severity.slice(1)}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${log.process}</td>
+                        <td class="px-6 py-4 text-sm text-gray-400">${log.message}</td>
+                    `;
+                    logTable.appendChild(row);
+                });
+            }
+
+            // Export to CSV
+            document.getElementById('export-btn').addEventListener('click', () => {
+                const headers = ['Timestamp', 'Severity', 'Process', 'Message'];
+                const csvContent = [
+                    headers.join(','),
+                    ...sampleLogs.map(log => 
+                        `"${log.timestamp}","${log.severity}","${log.process}","${log.message}"`
+                    )
+                ].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `wyno_logs_${new Date().toISOString().slice(0,10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+
+            // Initial render
+            setTimeout(() => renderLogs(sampleLogs), 1000);
+        });
+    </script>
+</body>
+</html>
