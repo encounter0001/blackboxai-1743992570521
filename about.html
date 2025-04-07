@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About WYNO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="h-full text-gray-100">
+    <div class="min-h-full">
+        <nav class="bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-alt text-indigo-500 text-2xl"></i>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="index.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                                <a href="config.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Configuration</a>
+                                <a href="logs.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logs</a>
+                                <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-white">
+                    <i class="fas fa-info-circle mr-2"></i> About WYNO Anti-Cheat
+                </h1>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="bg-gray-800 rounded-lg shadow overflow-hidden">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex flex-col md:flex-row gap-8">
+                            <!-- System Info -->
+                            <div class="md:w-1/2">
+                                <h2 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">
+                                    <i class="fas fa-server mr-2"></i> System Information
+                                </h2>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-400">WYNO Version</p>
+                                        <p class="text-gray-200">2.1.0</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-400">Kernel Module</p>
+                                        <p id="kernel-module-version" class="text-gray-200">Loading...</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-400">System Uptime</p>
+                                        <p id="system-uptime" class="text-gray-200">Loading...</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-400">Detection Methods</p>
+                                        <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                            <li>Process scanning</li>
+                                            <li>Memory integrity checks</li>
+                                            <li>Driver verification</li>
+                                            <li>Hardware fingerprinting</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Changelog -->
+                            <div class="md:w-1/2">
+                                <h2 class="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">
+                                    <i class="fas fa-code-branch mr-2"></i> Changelog
+                                </h2>
+                                <div class="space-y-4">
+                                    <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                                        <p class="text-sm font-medium text-gray-200">v2.1.0 - Current</p>
+                                        <ul class="list-disc list-inside text-gray-400 text-sm space-y-1 mt-1">
+                                            <li>Added hardware spoofing modes</li>
+                                            <li>Improved Discord alert formatting</li>
+                                            <li>Reduced CPU usage during scans</li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-l-4 border-gray-700 pl-4 py-1">
+                                        <p class="text-sm font-medium text-gray-400">v2.0.2</p>
+                                        <ul class="list-disc list-inside text-gray-500 text-sm space-y-1 mt-1">
+                                            <li>Fixed process termination issues</li>
+                                            <li>Added more cheat signatures</li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-l-4 border-gray-700 pl-4 py-1">
+                                        <p class="text-sm font-medium text-gray-400">v2.0.0</p>
+                                        <ul class="list-disc list-inside text-gray-500 text-sm space-y-1 mt-1">
+                                            <li>Complete UI redesign</li>
+                                            <li>Added webhook configuration</li>
+                                            <li>New kernel module architecture</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credits -->
+                        <div class="mt-8 pt-6 border-t border-gray-700">
+                            <h2 class="text-xl font-semibold text-white mb-4">
+                                <i class="fas fa-award mr-2"></i> Credits
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-gray-750 rounded-lg p-4">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center">
+                                            <i class="fas fa-shield-alt text-white"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-gray-200">WYNO Security Team</p>
+                                            <p class="text-sm text-gray-400">Core development</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-750 rounded-lg p-4">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-600 flex items-center justify-center">
+                                            <i class="fas fa-users text-white"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-gray-200">Open Source Community</p>
+                                            <p class="text-sm text-gray-400">Contributions & testing</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- License -->
+                        <div class="mt-8 pt-6 border-t border-gray-700">
+                            <h2 class="text-xl font-semibold text-white mb-2">
+                                <i class="fas fa-balance-scale mr-2"></i> License
+                            </h2>
+                            <div class="bg-gray-750 rounded-lg p-4">
+                                <p class="text-sm text-gray-300 mb-2">
+                                    WYNO Anti-Cheat is licensed under the GNU General Public License v3.0
+                                </p>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="inline-flex items-center text-sm text-indigo-400 hover:text-indigo-300">
+                                        <i class="fas fa-file-alt mr-2"></i> View Full License
+                                    </a>
+                                    <a href="#" class="inline-flex items-center text-sm text-indigo-400 hover:text-indigo-300">
+                                        <i class="fab fa-github mr-2"></i> Source Code
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading system info
+            setTimeout(() => {
+                document.getElementById('kernel-module-version').textContent = 'v2.1.0 (Loaded)';
+                document.getElementById('system-uptime').textContent = '3 days, 7 hours, 22 minutes';
+            }, 800);
+        });
+    </script>
+</body>
+</html>
