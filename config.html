@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WYNO Configuration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4B5563;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4F46E5;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body class="h-full text-gray-100">
+    <div class="min-h-full">
+        <nav class="bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shield-alt text-indigo-500 text-2xl"></i>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a href="index.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                                <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Configuration</a>
+                                <a href="logs.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Logs</a>
+                                <a href="about.html" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-white">
+                    <i class="fas fa-cog mr-2"></i> Configuration
+                </h1>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="bg-gray-800 rounded-lg shadow overflow-hidden">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg leading-6 font-medium text-white mb-6">
+                            Anti-Cheat Module Settings
+                        </h3>
+                        
+                        <form id="config-form">
+                            <!-- Discord Webhook -->
+                            <div class="mb-8">
+                                <label for="webhook" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-link mr-2"></i> Discord Webhook URL
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input type="url" name="webhook" id="webhook" 
+                                        class="bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-sm rounded-md p-3"
+                                        placeholder="https://discord.com/api/webhooks/..."
+                                        pattern="https://.*"
+                                        required>
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-exclamation-circle text-red-500 hidden" id="webhook-error"></i>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-sm text-gray-400">
+                                    Alerts will be sent to this Discord webhook when cheats are detected.
+                                </p>
+                            </div>
+
+                            <!-- Spoofing Mode -->
+                            <div class="mb-8">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-user-secret mr-2"></i> Hardware Spoofing Mode
+                                </label>
+                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                    <div class="relative bg-gray-700 border rounded-lg p-4 flex focus:outline-none">
+                                        <input type="radio" id="light-spoof" name="spoof-mode" value="light" class="h-4 w-4 mt-1 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                        <label for="light-spoof" class="ml-3 flex flex-col">
+                                            <span class="block text-sm font-medium text-gray-100">Light</span>
+                                            <span class="block text-sm text-gray-400">Minimal changes to hardware IDs</span>
+                                        </label>
+                                    </div>
+                                    <div class="relative bg-gray-700 border rounded-lg p-4 flex focus:outline-none">
+                                        <input type="radio" id="medium-spoof" name="spoof-mode" value="medium" class="h-4 w-4 mt-1 text-indigo-600 border-gray-300 focus:ring-indigo-500" checked>
+                                        <label for="medium-spoof" class="ml-3 flex flex-col">
+                                            <span class="block text-sm font-medium text-gray-100">Medium</span>
+                                            <span class="block text-sm text-gray-400">Moderate hardware changes</span>
+                                        </label>
+                                    </div>
+                                    <div class="relative bg-gray-700 border rounded-lg p-4 flex focus:outline-none">
+                                        <input type="radio" id="full-spoof" name="spoof-mode" value="full" class="h-4 w-4 mt-1 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                        <label for="full-spoof" class="ml-3 flex flex-col">
+                                            <span class="block text-sm font-medium text-gray-100">Full</span>
+                                            <span class="block text-sm text-gray-400">Complete hardware identity change</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scan Interval -->
+                            <div class="mb-8">
+                                <label for="scan-interval" class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-sync-alt mr-2"></i> Process Scan Interval
+                                </label>
+                                <input type="range" id="scan-interval" name="scan-interval" min="500" max="10000" step="500" value="5000" 
+                                    class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                                <div class="flex justify-between text-xs text-gray-400 mt-1">
+                                    <span>500ms</span>
+                                    <span id="interval-value">5000ms</span>
+                                    <span>10000ms</span>
+                                </div>
+                                <p class="mt-2 text-sm text-gray-400">
+                                    How frequently the system scans for cheat processes (lower = more CPU usage).
+                                </p>
+                            </div>
+
+                            <!-- Toggle Settings -->
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label for="enable-spoofing" class="block text-sm font-medium text-gray-300">
+                                            <i class="fas fa-mask mr-2"></i> Enable Hardware Spoofing
+                                        </label>
+                                        <p class="text-sm text-gray-400 mt-1">
+                                            Randomizes hardware identifiers when cheats are detected.
+                                        </p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="enable-spoofing" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label for="enable-alerts" class="block text-sm font-medium text-gray-300">
+                                            <i class="fas fa-bell mr-2"></i> Enable Discord Alerts
+                                        </label>
+                                        <p class="text-sm text-gray-400 mt-1">
+                                            Send notifications to Discord when cheats are detected.
+                                        </p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="enable-alerts" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Save Button -->
+                            <div class="mt-8">
+                                <button type="submit" 
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <i class="fas fa-save mr-2"></i> Save Configuration
+                                </button>
+                                <span id="save-status" class="ml-4 text-sm text-gray-400 hidden">
+                                    <i class="fas fa-check-circle text-green-500 mr-1"></i> Settings saved successfully
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update interval value display
+            const intervalSlider = document.getElementById('scan-interval');
+            const intervalValue = document.getElementById('interval-value');
+            intervalSlider.addEventListener('input', () => {
+                intervalValue.textContent = `${intervalSlider.value}ms`;
+            });
+
+            // Form validation
+            const form = document.getElementById('config-form');
+            const webhookInput = document.getElementById('webhook');
+            const webhookError = document.getElementById('webhook-error');
+
+            webhookInput.addEventListener('input', () => {
+                if (webhookInput.validity.valid) {
+                    webhookError.classList.add('hidden');
+                } else {
+                    webhookError.classList.remove('hidden');
+                }
+            });
+
+            // Form submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const saveStatus = document.getElementById('save-status');
+                
+                // Simulate API call
+                setTimeout(() => {
+                    saveStatus.classList.remove('hidden');
+                    setTimeout(() => saveStatus.classList.add('hidden'), 3000);
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
