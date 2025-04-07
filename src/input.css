@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer components {
+    .btn-wyno {
+        @apply bg-wyno-primary hover:bg-wyno-primary/90 text-white font-medium py-2 px-4 rounded-md transition-colors;
+    }
+    .alert-badge {
+        @apply px-2 inline-flex text-xs leading-5 font-semibold rounded-full;
+    }
+}
