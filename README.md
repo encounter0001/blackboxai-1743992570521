@@ -1,78 +1,90 @@
+# WYNO Anti-Cheat Dashboard
 
-Built by https://www.blackbox.ai
-
----
-
-```markdown
-# WYNO Anti-Cheat
-
-## Project Overview
-WYNO Anti-Cheat is an advanced kernel driver designed to detect and prevent cheating in games by monitoring running processes and blacklisting known malicious software. The driver can also randomize hardware identifiers through a hardware spoofing mechanism to protect users from being flagged by anti-cheat systems. Alerts can be sent to a Discord webhook in real-time when suspicious activity is detected.
-
-## Installation
-### Prerequisites
-- A Linux kernel development environment
-- Kernel headers and build tools
-- `gcc`, `make`, and other build essentials
-
-### Steps
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/example/wyno-anti-cheat.git
-    cd wyno-anti-cheat
-    ```
-
-2. **Build the kernel module**:
-    ```bash
-    make
-    ```
-
-3. **Load the module**:
-    ```bash
-    sudo insmod wino_driver.ko webhook=https://discord.com/api/webhooks/your-webhook-url enable_spoofing=true 
-    ```
-
-4. **Check `dmesg` for logs** to ensure the driver is running:
-    ```bash
-    dmesg | tail
-    ```
-
-5. **Configure the system** according to your requirements. Modify the `config.json` for initial settings.
-
-## Usage
-The driver runs in the background and automatically scans for blacklisted processes based on configured intervals. The Discord webhook will receive alerts whenever a cheat is detected or a process is terminated. Configuration can be done through the `config.html` web interface or by directly editing `config.json`.
-
-### Configuration Options
-- **Discord Webhook URL**: Specify your webhook URL to receive alerts.
-- **Process Names**: Define the list of known cheat process names to monitor.
-- **Blacklisted Driver Hashes**: List known malicious driver hashes to be flagged.
-- **Scan Interval**: Adjust the frequency of scans based on system performance and security needs.
+## Overview
+The WYNO Anti-Cheat Dashboard is a web-based interface for monitoring and configuring the WYNO Anti-Cheat system. It provides real-time process monitoring, configuration management, activity logs, and system information.
 
 ## Features
-- **Real-time Cheating Detection**: Scans processes in real-time and terminates known cheats.
-- **Discord Integration**: Sends alerts to a designated Discord channel.
-- **Hardware Spoofing**: Randomizes hardware identifiers to prevent detection.
-- **Configurable Scan Intervals**: Customizable scanning frequency for performance optimization.
-- **Web-based Dashboard**: Offers a graphical user interface for configuration and monitoring.
+- Responsive dashboard with status cards and active process list
+- Configuration panel with Discord webhook, spoofing modes, scan interval, and toggles
+- Logs page with filtering, pagination, and CSV export
+- About page with system info, changelog, credits, and license
+- Dark/light mode toggle with theme persistence
+- Toast notifications and loading skeletons for enhanced UX
 
-## Dependencies
-The following packages are required (if specified in a `package.json`):
-- [Any additional libraries or development tools if applicable]
+## Installation
+1. Clone the repository.
+2. Ensure Python 3 is installed.
+3. Run the web server:
+   ```bash
+   python3 -m http.server 8000
+   ```
+4. Open your browser and navigate to `http://localhost:8000/index.html`.
 
-## Project Structure
+## Usage
+- Navigate between Dashboard, Configuration, Logs, and About pages using the top menu.
+- Use the theme toggle button in the top-left to switch between dark and light modes.
+- Configure anti-cheat settings in the Configuration page and save changes.
+- View detection logs and export them as CSV in the Logs page.
+- Review system information and changelog in the About page.
+
+## Deployment
+- The dashboard is a static website and can be hosted on any web server.
+- Ensure the server serves the files with correct MIME types.
+- For production, consider using HTTPS and securing the Discord webhook URL.
+
+## Custom Discord Bot for Alerts
+
+This project includes a Node.js backend server (`server.js`) that runs a Discord bot to send alert messages to a specified Discord channel.
+
+### Setup
+
+1. Create a Discord bot via the Discord Developer Portal and obtain its bot token.
+2. Invite the bot to your server with permissions to send messages.
+3. Create a `.env` file in the project root with the following content:
+
 ```
-/wino-anti-cheat
-│
-├── wino_driver.c        # Main kernel driver code
-├── config.json          # Configuration file for the driver
-├── index.html           # Dashboard for monitoring
-├── config.html          # Configuration web interface
-├── logs.html            # Log viewer interface
-└── about.html           # About information and credits
+DISCORD_BOT_TOKEN=your_bot_token_here
+PORT=3000
 ```
 
-## Acknowledgments
-- Developed by WYNO Security.
-- Contributions and testing by the open source community.
-- Licensed under the GNU General Public License v3.0.
+4. Install dependencies:
+
+```bash
+npm install express body-parser discord.js dotenv
 ```
+
+5. Start the server:
+
+```bash
+node server.js
+```
+
+### Usage
+
+- The backend exposes an API endpoint `/api/alert` that accepts POST requests with JSON body:
+
+```json
+{
+  "channelId": "discord_channel_id",
+  "message": "Alert message text"
+}
+```
+
+- The bot will send the message to the specified Discord channel.
+
+### Integration
+
+- Update the frontend configuration or alert system to send alert requests to this backend API.
+
+## Final Adjustments
+- The dashboard is designed with Tailwind CSS and Font Awesome for modern styling.
+- JavaScript handles interactivity, theme toggling, and form validation.
+- The system is extensible for integration with backend APIs.
+
+## License
+This project is licensed under the GNU General Public License v3.0.
+
+## Credits
+- WYNO Security Team - Core development
+- Open Source Community - Contributions & testing
+
